@@ -5,6 +5,6 @@ import { registerValidation } from "../validations/authValidations.js";
 
 const router = express.Router();
 
-router.post('/', registerValidation, handleValidationError, authController.register);
+router.post('/register', registerValidation, handleValidationError, authController.register);
 
 export default router;
