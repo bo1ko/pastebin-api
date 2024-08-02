@@ -18,7 +18,7 @@ export const register = async (req, res) => {
         const user = await doc.save();
         const token = refreshToken(user);
         const { passwordHash, ...userData } = user._doc;
-
+        
         res.json({
             ...userData,
             token,
@@ -37,18 +37,17 @@ export const login = async (req, res) => {
                 message: 'User not found',
             });
         }
-
+        
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash)
-
+        
         if (!isValidPass) {
             return res.status(404).json({
                 message: 'Wrong password',
             })
         }
-
+        
         const token = refreshToken(user);
         const { passwordHash, ...userData } = user._doc;
-
         res.json({
             ...userData,
             token,
@@ -57,10 +56,6 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
-};
-
-export const logout = (req, res) => {
-
 };
 
 function refreshToken(user) {
