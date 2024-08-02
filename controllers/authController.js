@@ -16,17 +16,7 @@ export const register = async (req, res) => {
         });
 
         const user = await doc.save();
-
-        const token = jwt.sign(
-            {
-                _id: user._id,
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: '30d',
-            },
-        );
-
+        const token = refreshToken(user);
         const { passwordHash, ...userData } = user._doc;
 
         res.json({
@@ -56,16 +46,7 @@ export const login = async (req, res) => {
             })
         }
 
-        const token = jwt.sign(
-            {
-                _id: user._id,
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: '30d',
-            },
-        );
-
+        const token = refreshToken(user);
         const { passwordHash, ...userData } = user._doc;
 
         res.json({
@@ -82,6 +63,14 @@ export const logout = (req, res) => {
 
 };
 
-export const refreshToken = (req, res) => {
-
+function refreshToken(user) {
+    return jwt.sign(
+        {
+            _id: user._id,
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '30d',
+        },
+    );
 };
