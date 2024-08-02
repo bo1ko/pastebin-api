@@ -5,3 +5,8 @@ export const registerValidation = [
     body('username', 'Username is too small').isLength({ min: 3 }),
     body('password', 'The password must be at least 8 characters long'),
 ];
+
+export const loginValidation = [
+    body('email', 'Wrong email format').isEmail(),
+    body('password', 'The password must be at least 8 characters long'),
+];
